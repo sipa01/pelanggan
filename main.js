@@ -22,6 +22,11 @@ const firebaseConfig = {
   measurementId: "G-EVVQ80Q08C"
 };
 
+
+// Inisialisasi firebase
+const aplikasi = initializeApp(firebaseConfig)
+const basisdata = getFirestore(aplikasi)
+
 // fungsi ambil daftar pelanggan
 export async function ambilDaftarPelanggan() {
   const refDokumen = collection(basisdata, "pelanggan");
@@ -41,8 +46,20 @@ export async function ambilDaftarPelanggan() {
   return hasilKueri;
 }
 
+// fungsi menambah data pelanggan 
+export async function tambahPelanggan(nama, alamat, nohape) {
+  try {
+    // menyimpan data ke firebase
+    const refDokumen = await addDoc(collection(basisdata, "pelanggan"), {
+      nama: nama,
+      alamat: alamat,
+      nohape: nohape
+    })
 
-
-// Inisialisasi firebase
-const aplikasi = initializeApp(firebaseConfig)
-const basisdata = getFirestore(aplikasi)
+    // menampilkan pesan berhasil
+    console.log("berhasip menyimpan data pelanggan")
+  } catch (e) {
+    // menampilkan pesan gagal
+    console.log("gagal menyimpan data pelanggan" + e)
+  }
+}

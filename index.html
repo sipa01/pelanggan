@@ -13,11 +13,11 @@
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-<style>
-  body {
-    margin: 50px;
-  }
-</style>
+  <style>
+    body {
+      margin: 50px;
+    }
+  </style>
 
 </head>
 
@@ -38,6 +38,7 @@
     </tbody>
   </table>
 
+  <p id="jumlah">jumlah pelanggan </p>
   <a href="formtambah.html">Tambah Pelanggan</a>
 
   <script type="module">
@@ -49,6 +50,7 @@
 
 
       let nomor = 1
+      let total = 0
       daftarPelanggan.forEach((data) => {
         elemenDaftarPelanggan.append(
           "<tr>" +
@@ -60,7 +62,12 @@
           "</tr>"
         )
         nomor = nomor + 1
+
+        $('#jumlah').html('jumlah pelanggan : ' + (nomor - 1))
       })
+
+
+      $("#total").html(total)
 
       $(".tombol-hapus").click(async function() {
         if (confirm("apakah benar mau menghapus?")) {

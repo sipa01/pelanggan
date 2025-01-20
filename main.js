@@ -12,6 +12,7 @@ import {
   orderBy
 } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js'
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyCfqZD7UZZt-GWmtNhfJyksrv3-8ENRjto",
   authDomain: "insan-cemerlang-d5574.firebaseapp.com",
@@ -22,12 +23,30 @@ const firebaseConfig = {
   measurementId: "G-EVVQ80Q08C"
 };
 
-
 // Inisialisasi firebase
 const aplikasi = initializeApp(firebaseConfig)
 const basisdata = getFirestore(aplikasi)
 
-// fungsi ambil daftar pelanggan
+export async function tambahPelanggan(nama, alamat, nohape) {
+  try {
+    // menyimpan data ke firebase
+    const refDokumen = await addDoc(collection(basisdata, "inventory"), {
+      nama: nama,
+      alamat: alamat,
+      nohape: nohape
+    })
+
+    // menampilkan pesan berhasil
+    console.log("berhasip menyimpan data barang")
+  } catch (e) {
+    // menampilkan pesan gagal
+    console.log("gagal menyimpan data barang" + e)
+  }
+}
+export async function hapusPelanggan(id) {
+  await deleteDoc(doc(basisdata, "pelanggan", id))
+}
+
 export async function ambilDaftarPelanggan() {
   const refDokumen = collection(basisdata, "pelanggan");
   const kueri = query(refDokumen, orderBy("nama"));
@@ -46,20 +65,20 @@ export async function ambilDaftarPelanggan() {
   return hasilKueri;
 }
 
-// fungsi menambah data pelanggan 
-export async function tambahPelanggan(nama, alamat, nohape) {
-  try {
-    // menyimpan data ke firebase
-    const refDokumen = await addDoc(collection(basisdata, "pelanggan"), {
+export async function ubahPelanggan(id, nama, alamat, nohape) {
+  await updateDoc(
+    doc(basisdata, "pelanggan", id),
+    {
       nama: nama,
       alamat: alamat,
       nohape: nohape
-    })
 
-    // menampilkan pesan berhasil
-    console.log("berhasip menyimpan data pelanggan")
-  } catch (e) {
-    // menampilkan pesan gagal
-    console.log("gagal menyimpan data pelanggan" + e)
-  }
+    })
+}
+
+export async function ambilPelanggan(id) {
+  const refDokumen = await doc(basisdata, "pelanggan", id)
+  const snapshotDocumen = await getDoc(refDokumen)
+
+  return await snapshotDocumen.data()
 }
